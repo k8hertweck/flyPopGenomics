@@ -1,4 +1,4 @@
-# script to filter out paired population frequency data from tlex .csv file which is comma delimited with double quotations around text
+# script to filter out paired population frequency data from tlex .csv file which is comma delimited
 
 #count number of original records
 wc -l $1
@@ -15,4 +15,7 @@ grep -v "100,100" $1temp0 | awk 'BEGIN {FS=","; OFS=" "}
 wc -l $1.filter
 
 #remove intermediate files
-rm $1tempNA $temp0
+rm $1tempNA $1temp0
+
+#replace commas with tabs
+
