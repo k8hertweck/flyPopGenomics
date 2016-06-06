@@ -1,8 +1,13 @@
-# prepping input files for popoolationTE
+#!/bin/bash
+
+## prepping input files for popoolationTE
 
 ## required:
-# dmel-all-transposon-r5.55.fasta
-#
+# annotation version 2013 May (FB2013_03 Dmel Release 5.51) downloaded from http://flybase.org/static_pages/downloads/bulkdata7.html
+#	dmel-all-transposon-r5.51.fasta.gz
+# 	dmelR5.fasta (only chromosomes)
+# dependencies
+#	repeatmasker 4.0.5
  
 ## creating combined reference genome
 
