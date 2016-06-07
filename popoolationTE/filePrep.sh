@@ -5,7 +5,7 @@
 ##creates:
 #	DmelComb.fas
 #	TEhierarchy5.51.tsv
-#	TEknown5.55.tsv
+#	TEknown5.51.tsv
 ## required:
 # annotation version 2013 May (FB2013_03 Dmel Release 5.51) downloaded from http://flybase.org/static_pages/downloads/bulkdata7.html
 #	dmel-all-transposon-r5.51.fasta.gz
@@ -52,7 +52,7 @@ awk '{print $2,"R",$4,$1}' table3.csv | tr " " "\t" > tableR.csv
 awk '{print $2,"F",$3,$1}' table3.csv | tr " " "\t" > tableF.csv
 
 # create final table
-cat tableF.csv tableR.csv | sort -k 4 > TEknown5.55.tsv
+cat tableF.csv tableR.csv | sort -k 4 > TEknown5.51.tsv
 
 #clean up
 rm table*.csv header transposonHeaders.lst transposonLong5.51.fasta
