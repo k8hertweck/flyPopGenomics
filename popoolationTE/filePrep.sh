@@ -4,7 +4,7 @@
 
 ##creates:
 #	DmelComb.fas
-#	TEhierarchy5.51.csv
+#	TEhierarchy5.51.tsv
 ## required:
 # annotation version 2013 May (FB2013_03 Dmel Release 5.51) downloaded from http://flybase.org/static_pages/downloads/bulkdata7.html
 #	dmel-all-transposon-r5.51.fasta.gz
@@ -39,7 +39,7 @@ cut -d " " -f 1,4 transposonHeaders.lst | sed s/\>// | sed s/name=// | sed s/{}.
 join -a 1 <(sort TEtemplate.txt) <(sort table1.csv) | awk '{print $8,$1,$3,$4,$5,$6,$7}' > table2.csv
 
 # add TE hierarchy header and convert to tsv
-echo -n "" > TEhierarchy5.51.csv
-echo "insert id family superfamily suborder class problem" | cat - table2.csv | tr " " "\t" >> TEhierarchy5.51.csv
+echo -n "" > TEhierarchy5.51.tsv
+echo "insert id family superfamily suborder class problem" | cat - table2.csv | tr " " "\t" >> TEhierarchy5.51.tsv
 
 rm table*.csv header transposonHeaders.lst transposonLong5.51.fasta
