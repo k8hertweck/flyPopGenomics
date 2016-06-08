@@ -21,7 +21,7 @@
 #SBATCH -t 24:00:00            # Run time (hh:mm:ss)
 #SBATCH --mail-user k8hertweck@gmail.com
 #SBATCH --mail-type=ALL
-#SBATCH -A fly
+#SBATCH -A flyTE
 #------------------------------------------------------
 
 module load bwa/0.7.7
