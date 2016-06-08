@@ -24,6 +24,24 @@
 #SBATCH -A flyTE
 #------------------------------------------------------
 
+module load bwa/0.7.7 perl/5.16.2
+
+popte=/work/03177/hertweck/myapps/popoolationte
+scripts=/home1/03177/hertweck/fly/flyPopGenomics/popoolationTE
+
+cd /scratch/03177/hertweck/fly
+
+# copy files over from scripts folder
+cp $scripts/DmelComb.fas .
+cp $scripts/TEhierarchy5.51.tsv .
+cp $scripts/TEknown5.51.tsv .
+
+# index combined reference
+bwa index DmelComb.fas
+
+# identify poly-N stretches in repeat-masked genom
+perl $popte/genomic-N-2gtf.pl --input DmelComb.fas > poly_n.gtf
+
 module load launcher
 setenv EXECUTABLE     $TACC_LAUNCHER_DIR/init_launcher 
 setenv CONTROL_FILE   popTEscripts
