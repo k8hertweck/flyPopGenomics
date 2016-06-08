@@ -24,7 +24,7 @@
 #SBATCH -A flyTE
 #------------------------------------------------------
 
-module load bwa/0.7.7
+module load bwa/0.7.7 perl/5.16.2
 
 popte=/work/03177/hertweck/myapps/popoolationte
 scripts=/home1/03177/hertweck/fly/flyPopGenomics/popoolationTE
