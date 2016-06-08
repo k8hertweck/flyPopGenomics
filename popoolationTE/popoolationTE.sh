@@ -10,22 +10,35 @@ cd /scratch/03177/hertweck/fly/$1
 # set up for loop
 for x in 1 2 3 4 5
 	do
+		echo $1"$x"
 		# file conversion
-		gunzip $1"$x"R1.fastq | awk '{if ($2 ~ /^[0-9]/) print $1 "/1"; else print $0}' > $1"$x"R1pop.fastq
-		gunzip $1"$x"R2.fastq | awk '{if ($2 ~ /^[0-9]/) print $1 "/2"; else print $0}' > $1"$x"R2pop.fastq
+		if [ -f $1"$x"R1pop.fastq ]
+			then
+				echo "fastq files already converted"
+			else
+				gunzip $1"$x"R1.fastq | awk '{if ($2 ~ /^[0-9]/) print $1 "/1"; else print $0}' > $1"$x"R1pop.fastq
+				gunzip $1"$x"R2.fastq | awk '{if ($2 ~ /^[0-9]/) print $1 "/2"; else print $0}' > $1"$x"R2pop.fastq
+		fi
 
-		# run bwa on each paired end file individually
-		bwa bwasw -t 4 ../DmelComb.fas $1"$x"R1pop.fastq > $1"$x"R1.sam
-		bwa bwasw -t 4 ../DmelComb.fas $1"$x"R2pop.fastq > $1"$x"R2.sam
+		if [ -f $1"$x"pe-reads.sorted.sam ]
+			then
+				echo "reads already mapped"
+			else	
+				# run bwa on each paired end file individually
+				bwa bwasw -t 4 ../DmelComb.fas $1"$x"R1pop.fastq > $1"$x"R1.sam
+				bwa bwasw -t 4 ../DmelComb.fas $1"$x"R2pop.fastq > $1"$x"R2.sam
 
-		# create paired-end information
-		perl $popte/samro.pl --sam1 $1"$x"R1.sam --sam2 $1"$x"R2.sam \
-			--fq1 $1"$x"R1pop.fastq --fq2 $1"$x"R2pop.fastq --output $1"$x"pe-reads.sam
+				# create paired-end information
+				perl $popte/samro.pl --sam1 $1"$x"R1.sam --sam2 $1"$x"R2.sam \
+					--fq1 $1"$x"R1pop.fastq --fq2 $1"$x"R2pop.fastq \
+					--output $1"$x"pe-reads.sam
 
-		# sort sam file
-		samtools view -Sb $1"$x"pe-reads.sam | samtools sort - $1"$x"pe-reads.sorted
-		samtools view $1"$x"pe-reads.sorted.bam > $1"$x"pe-reads.sorted.sam
-
+				# sort sam file
+				samtools view -Sb $1"$x"pe-reads.sam | \
+					samtools sort - $1"$x"pe-reads.sorted
+				samtools view $1"$x"pe-reads.sorted.bam > $1"$x"pe-reads.sorted.sam
+		fi
+		
 		# identify forward and reverse insertions
 		perl $popte/identify-te-insertsites.pl --input $1"$x"pe-reads.sorted.sam \					
 			--te-hierarchy-file ../TEhierarchy5.51.tsv --te-hierarchy-level family \ 
