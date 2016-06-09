@@ -7,10 +7,8 @@
 #	TEhierarchy5.51.tsv
 #	TEknown5.51.tsv
 ## required:
-# annotation version 2013 May (FB2013_03 Dmel Release 5.51) downloaded from http://flybase.org/static_pages/downloads/bulkdata7.html
-#	dmel-all-transposon-r5.51.fasta.gz
-# 	DmelR5.fasta (only chromosomes, with simplified headers)
-#	
+# annotation version 2013 May (FB2013_03 Dmel Release 5.51) downloaded from http://flybase.org/static_pages/downloads/bulkdata7.html, including dmel-all-transposon-r5.51.fasta.gz and DmelR5.fasta (only chromosomes, with simplified headers)
+#	transposon_sequence_set_v9.44.fasta, from https://github.com/cbergman/transposons (embl converted to fasta)
 # TEtemplate.txt: one row per TE, with TE taxonomy/hierarchy specified
 # dependencies
 #	prinseq (installed to run as prinseq-lite)
@@ -27,7 +25,7 @@ repeatmasker -no_is -nolow -norna -lib transposon5.51.fasta -pa 4 DmelR5.fas
 prinseq-lite -fasta transposon5.51.fasta -min_len 40 > transposonLong5.51.fasta
 
 # combine reference genome and TE sequences
-cat DmelR5.fas.masked transposonLong5.51.fasta > DmelComb.fas
+cat DmelR5.fas.masked transposonLong5.51.fasta transposon_sequence_set_v9.44.fasta > DmelComb.fas
 
 ## creating TE hierarchy file
 # insert	id	family	superfamily	suborder	class	problem
