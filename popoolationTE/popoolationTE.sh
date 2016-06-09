@@ -36,9 +36,8 @@ for x in 1 2 3 4 5
 					--output $1"$x"pe-reads.sam
 
 				# sort sam file
-				samtools view -Sb $1"$x"pe-reads.sam | \
-					samtools sort - $1"$x"pe-reads.sorted
-				samtools view $1"$x"pe-reads.sorted.bam > $1"$x"pe-reads.sorted.sam
+				samtools view -b --threads 4 $1"$x"pe-reads.sam | \
+					samtools sort --threads 4 -O BAM -o $1"$x"pe-reads.sorted.sam
 		fi
 		
 		# identify forward and reverse insertions
