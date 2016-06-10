@@ -27,8 +27,8 @@ for x in 1 2 3 4 5
 				echo "reads already mapped"
 			else	
 				# run bwa on each paired end file individually
-				bwa bwasw -t 2 ../DmelComb.fas $1"$x"R1pop.fastq > $1"$x"R1.sam
-				bwa bwasw -t 2 ../DmelComb.fas $1"$x"R2pop.fastq > $1"$x"R2.sam
+				bwa bwasw ../DmelComb.fas $1"$x"R1pop.fastq > $1"$x"R1.sam
+				bwa bwasw ../DmelComb.fas $1"$x"R2pop.fastq > $1"$x"R2.sam
 
 				# create paired-end information
 				perl $popte/samro.pl --sam1 $1"$x"R1.sam --sam2 $1"$x"R2.sam \
@@ -39,8 +39,8 @@ for x in 1 2 3 4 5
 				gzip $1"$x"R*.fastq
 
 				# sort sam file
-				samtools view -b --threads 2 $1"$x"pe-reads.sam | \
-					samtools sort --threads 2 -O BAM -o $1"$x"pe-reads.sorted.sam
+				samtools view -b $1"$x"pe-reads.sam | \
+					samtools sort -O BAM -o $1"$x"pe-reads.sorted.sam
 		fi
 		
 		# identify forward and reverse insertions

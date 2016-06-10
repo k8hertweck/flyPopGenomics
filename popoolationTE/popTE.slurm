@@ -15,7 +15,7 @@
 #
 #SBATCH -J popTE                 # Job name
 #SBATCH -N 1                   # Total number of nodes (16 cores/node)
-#SBATCH -n 12                   # Total number of tasks
+#SBATCH -n 6                   # Total number of tasks
 #SBATCH -p normal              # Queue name
 #SBATCH -o popTE.o%j             # Name of stdout output file (%j expands to jobid)
 #SBATCH -t 24:00:00            # Run time (hh:mm:ss)
