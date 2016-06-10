@@ -35,6 +35,9 @@ for x in 1 2 3 4 5
 					--fq1 $1"$x"R1pop.fastq --fq2 $1"$x"R2pop.fastq \
 					--output $1"$x"pe-reads.sam
 
+				rm $1"$x"R*pop.fastq
+				gzip $1"$x"R*.fastq
+
 				# sort sam file
 				samtools view -b --threads 2 $1"$x"pe-reads.sam | \
 					samtools sort --threads 2 -O BAM -o $1"$x"pe-reads.sorted.sam
