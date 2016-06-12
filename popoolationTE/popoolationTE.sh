@@ -22,7 +22,7 @@ for x in 1 2 3 4 5
 				gunzip $1"$x"R2.fastq | awk '{if ($2 ~ /^[0-9]/) print $1 "/2"; else print $0}' > $1"$x"R2pop.fastq
 		fi
 
-		if [ -f $1"$x"pe-reads.sorted.sam ]
+		if [ -f $1"$x"pe-reads.sam ]
 			then
 				echo "reads already mapped"
 			else	
@@ -37,7 +37,12 @@ for x in 1 2 3 4 5
 
 				rm $1"$x"R*pop.fastq
 				gzip $1"$x"R*.fastq
-
+		fi
+		
+		if [ -f $1"$x"pe-reads.sorted.sam ]
+			then
+				echo "reads already sorted"
+			else
 				# sort sam file
 				samtools view -b $1"$x"pe-reads.sam | \
 					samtools sort -O BAM -o $1"$x"pe-reads.sorted.sam
