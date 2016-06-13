@@ -46,11 +46,11 @@ paste canonicalDR.lst canonicalID.lst | grep -v '\\' | tr "\t" " " > canonicalHi
 cat table1.csv canonicalHierarchy.lst > tableComb.csv
 
 # join with TE taxonomy table (TE template extracted from original popoolationTE paper and manually curated for capitalization, etc)
-join -a 1 <(sort TEtemplate.txt) <(sort tableComb.csv) | awk '{print $8,$1,$3,$4,$5,$6,$7}' > table2.csv
+join -a 1 <(sort TEtemplate.txt) <(sort tableComb.csv) | awk '{print $8,$1,$2,$3,$4,$5,$6,$7}' > table2.csv
 
 # add TE hierarchy header and convert to tsv
 echo -n "" > TEhierarchy5.51.tsv
-echo "insert id family superfamily suborder class problem" | cat - table2.csv | tr " " "\t" >> TEhierarchy5.51.tsv
+echo "insert id family superfamily suborder order class problem" | cat - table2.csv | tr " " "\t" >> TEhierarchy5.51.tsv
 
 ## create known TE insertion file: chromosome, F/R, position, ID 
 cut -d " " -f 1,3 transposonHeaders.lst | sed s/\>// | sed s/loc\=// | sed s/\;// | sed s/\:/\ / | sed s/[.][.]/\ / | sed s/complement\(// | sed s/\)// > table3.csv
