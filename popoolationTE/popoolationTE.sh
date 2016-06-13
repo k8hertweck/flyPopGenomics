@@ -67,9 +67,9 @@ for x in 1 2 3 4 5
 							--output $1"$x"pe-reads.sam
 				fi
 	
-				# sort sam file
+CHECK ON ACO2				# sort sam file
 				samtools view -b --threads 2 $1"$x"pe-reads.sam > $1"$x"pe-reads.bam
-				samtools sort --threads 2 $1"$x"pe-reads.bam > $1"$x"pe-reads.sorted.sam
+				samtools sort --threads 2 -O SAM $1"$x"pe-reads.bam > $1"$x"pe-reads.sorted.sam
 					
 				# clean up
 				rm $1"$x"R*pop.fastq
