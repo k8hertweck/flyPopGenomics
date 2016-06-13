@@ -68,13 +68,15 @@ for x in 1 2 3 4 5
 				fi
 	
 				# sort sam file
-				samtools view -b --threads 2 $1"$x"pe-reads.sam | \
-					samtools sort --threads 2 -O BAM -o $1"$x"pe-reads.sorted.sam
+				samtools view -b --threads 2 $1"$x"pe-reads.sam > $1"$x"pe-reads.bam
+				samtools sort --threads 2 $1"$x"pe-reads.bam > $1"$x"pe-reads.sorted.sam
 					
 				# clean up
-				#rm $1"$x"R*pop.fastq
-				#rm $1"$x"R*.sam
-				#gzip $1"$x"R*.fastq
+				rm $1"$x"R*pop.fastq
+				rm $1"$x"R*.sam
+				rm $1"$x"pe-reads.sam
+				rm $1"$x"*.bam
+				gzip $1"$x"R*.fastq
 		fi
 		
 		# identify forward and reverse insertions
