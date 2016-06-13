@@ -18,19 +18,54 @@ for x in 1 2 3 4 5
 				echo "reads already mapped"
 			else
 				# file conversion
-				gunzip $1"$x"R1.fastq.gz 
-				awk '{if ($2 ~ /^[0-9]/) print $1 "/1"; else print $0}' $1"$x"R1.fastq > $1"$x"R1pop.fastq				
-				gunzip $1"$x"R2.fastq.gz 
-				awk '{if ($2 ~ /^[0-9]/) print $1 "/2"; else print $0}' $1"$x"R2.fastq > $1"$x"R2pop.fastq
+				if [ -f $1"$x"R1.fastq ]
+					then 
+						echo "R1 already unzipped"
+					else
+						gunzip $1"$x"R1.fastq.gz 
+				fi
+				if [ -f $1"$x"R2.fastq ]
+					then
+						echo "R2 already unzipped"
+					else
+						gunzip $1"$x"R2.fastq.gz
+				fi
+				if [ -f $1"$x"R1pop.fastq ]
+					then 
+						echo "R1 already converted"
+					else
+						awk '{if ($2 ~ /^[0-9]/) print $1 "/1"; else print $0}' $1"$x"R1.fastq > $1"$x"R1pop.fastq
+				fi
+				if [ -f $1"$x"R2pop.fastq ]
+					then 
+						echo "R2 already converted"
+					else
+						awk '{if ($2 ~ /^[0-9]/) print $1 "/2"; else print $0}' $1"$x"R2.fastq > $1"$x"R2pop.fastq
+				fi				
 				
 				# run bwa on each paired end file individually
-				bwa bwasw -t 2 ../DmelComb.fas $1"$x"R1pop.fastq > $1"$x"R1.sam
-				bwa bwasw -t 2 ../DmelComb.fas $1"$x"R2pop.fastq > $1"$x"R2.sam
+				if [ -f $1"$x"R1.sam ]
+					then 
+						echo "R1 already mapped"
+					else
+						bwa bwasw -t 2 ../DmelComb.fas $1"$x"R1pop.fastq > $1"$x"R1.sam
+				fi
+				if [ -f $1"$x"R2.sam ]
+					then 
+						echo "R2 already mapped"
+					else
+						bwa bwasw -t 2 ../DmelComb.fas $1"$x"R2pop.fastq > $1"$x"R2.sam
+				fi
 
 				# create paired-end information
-				perl $popte/samro.pl --sam1 $1"$x"R1.sam --sam2 $1"$x"R2.sam \
-					--fq1 $1"$x"R1pop.fastq --fq2 $1"$x"R2pop.fastq \
-					--output $1"$x"pe-reads.sam
+				if [ -f $1"$x"pe-reads.sam ]
+					then 
+						echo "mapped reads already paired"
+					else
+						perl $popte/samro.pl --sam1 $1"$x"R1.sam --sam2 $1"$x"R2.sam \
+							--fq1 $1"$x"R1pop.fastq --fq2 $1"$x"R2pop.fastq \
+							--output $1"$x"pe-reads.sam
+				fi
 	
 				# sort sam file
 				samtools view -b --threads 2 $1"$x"pe-reads.sam | \
