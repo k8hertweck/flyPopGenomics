@@ -13,16 +13,16 @@ cd /scratch/03177/hertweck/fly/$1
 for x in 1 2 3 4 5
 	do
 		echo $1"$x"
-		# file conversion
-		gunzip $1"$x"R1.fastq.gz 
-		awk '{if ($2 ~ /^[0-9]/) print $1 "/1"; else print $0}' $1"$x"R1.fastq > $1"$x"R1pop.fastq				
-		gunzip $1"$x"R2.fastq.gz 
-		awk '{if ($2 ~ /^[0-9]/) print $1 "/2"; else print $0}' $1"$x"R2.fastq > $1"$x"R2pop.fastq
-
-		if [ -f $1"$x"pe-reads.sam ]
+		if [ -f $1"$x"pe-reads.sorted.sam ]
 			then
 				echo "reads already mapped"
-			else	
+			else
+				# file conversion
+				gunzip $1"$x"R1.fastq.gz 
+				awk '{if ($2 ~ /^[0-9]/) print $1 "/1"; else print $0}' $1"$x"R1.fastq > $1"$x"R1pop.fastq				
+				gunzip $1"$x"R2.fastq.gz 
+				awk '{if ($2 ~ /^[0-9]/) print $1 "/2"; else print $0}' $1"$x"R2.fastq > $1"$x"R2pop.fastq
+				
 				# run bwa on each paired end file individually
 				bwa bwasw ../DmelComb.fas $1"$x"R1pop.fastq > $1"$x"R1.sam
 				bwa bwasw ../DmelComb.fas $1"$x"R2pop.fastq > $1"$x"R2.sam
@@ -31,18 +31,15 @@ for x in 1 2 3 4 5
 				perl $popte/samro.pl --sam1 $1"$x"R1.sam --sam2 $1"$x"R2.sam \
 					--fq1 $1"$x"R1pop.fastq --fq2 $1"$x"R2pop.fastq \
 					--output $1"$x"pe-reads.sam
-
-				rm $1"$x"R*pop.fastq
-				gzip $1"$x"R*.fastq
-		fi
-		
-		if [ -f $1"$x"pe-reads.sorted.sam ]
-			then
-				echo "reads already sorted"
-			else
+	
 				# sort sam file
 				samtools view -b $1"$x"pe-reads.sam | \
 					samtools sort -O BAM -o $1"$x"pe-reads.sorted.sam
+					
+				# clean up
+				#rm $1"$x"R*pop.fastq
+				#rm $1"$x"R*.sam
+				#gzip $1"$x"R*.fastq
 		fi
 		
 		# identify forward and reverse insertions
