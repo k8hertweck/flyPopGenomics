@@ -81,29 +81,29 @@ for x in 1 2 3 4 5
 		
 		# identify forward and reverse insertions
 		perl $popte/identify-te-insertsites.pl --input $1"$x"pe-reads.sorted.sam \					
-			--te-hierarchy-file ../TEhierarchy5.51.tsv --te-hierarchy-level family \ 
-			--narrow-range 75 --min-count 3 --min-map-qual 15 \ 
-			--output te-fwd-rev$1"$x".txt
+			--output $1"$x"te-fwd-rev.txt --min-count 3 --narrow-range 75 \
+			--min-map-qual 20 -te-hierarchy-file ../TEhierarchy5.51.tsv \
+			--te-hierarchy-level family
 
 		# obtain TE insertions
-		perl $popte/crosslink-te-sites.pl --directional-insertions te-fwd-rev$1"$x".txt \
-			--min-dist 74 --max-dist 250 --output te-inserts$1"$x".txt \
+		perl $popte/crosslink-te-sites.pl --directional-insertions $1"$x"te-fwd-rev.txt \
+			--min-dist 74 --max-dist 250 --output $1"$x"te-inserts.txt \
 			--single-site-shift 100 --poly-n ../poly_n.gtf \
 			--te-hierarchy ../TEhierarchy5.51.tsv --te-hier-level order
 
 		# Use known TE insertions to improve crosslinking 
 		perl $popte/update-teinserts-with-knowntes.pl --known ../TEknown5.51.tsv \
-			--output te-insertions$1"$x".txt --te-hierarchy-file ../TEhierarchy5.51.tsv \
-			--te-hierarchy-level family --max-dist 300 \
-			--te-insertions te-inserts$1"$x".txt --single-site-shift 100
+			--output $1"$x"te-insertions.txt --te-hierarchy-file ../TEhierarchy5.51.tsv \
+			--te-hierarchy-level family --max-dist 250 \
+			--te-insertions $1"$x"te-inserts.txt --single-site-shift 100
 
 		# estimate population frequencies
 		perl $popte/estimate-polymorphism.pl --sam-file $1"$x"pe-reads.sorted.sam \
-			--te-insert-file te-insertions$1"$x".txt \
+			--te-insert-file $1"$x"te-insertions.txt \
 			--te-hierarchy-file ../TEhierarchy5.51.tsv --te-hierarchy-level family \
-			--min-map-qual 15 --output te-polymorphism$1"$x".txt
+			--min-map-qual 20 --output $1"$x"te-polymorphism.txt
 
 		# filter output
-		perl $popte/filter-teinserts.pl --te-insertions te-polymorphism$1"$x".txt \
-			--output te-poly-filtered$1"$x".txt --discard-overlapping --min-count 10
+		perl $popte/filter-teinserts.pl --te-insertions $1"$x"te-polymorphism.txt \
+			--output $1"$x"te-poly-filtered.txt --discard-overlapping --min-count 10
 done
