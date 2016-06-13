@@ -14,15 +14,10 @@ for x in 1 2 3 4 5
 	do
 		echo $1"$x"
 		# file conversion
-		if [ -f $1"$x"R1pop.fastq ]
-			then
-				echo "fastq files already unzipped"
-			else
-				gunzip $1"$x"R1.fastq.gz 
-				awk '{if ($2 ~ /^[0-9]/) print $1 "/1"; else print $0}' $1"$x"R1.fastq > $1"$x"R1pop.fastq				
-				gunzip $1"$x"R2.fastq.gz 
-				awk '{if ($2 ~ /^[0-9]/) print $1 "/2"; else print $0}' $1"$x"R2.fastq > $1"$x"R2pop.fastq
-		fi
+		gunzip $1"$x"R1.fastq.gz 
+		awk '{if ($2 ~ /^[0-9]/) print $1 "/1"; else print $0}' $1"$x"R1.fastq > $1"$x"R1pop.fastq				
+		gunzip $1"$x"R2.fastq.gz 
+		awk '{if ($2 ~ /^[0-9]/) print $1 "/2"; else print $0}' $1"$x"R2.fastq > $1"$x"R2pop.fastq
 
 		if [ -f $1"$x"pe-reads.sam ]
 			then
