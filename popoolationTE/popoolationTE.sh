@@ -24,8 +24,8 @@ for x in 1 2 3 4 5
 				awk '{if ($2 ~ /^[0-9]/) print $1 "/2"; else print $0}' $1"$x"R2.fastq > $1"$x"R2pop.fastq
 				
 				# run bwa on each paired end file individually
-				bwa bwasw ../DmelComb.fas $1"$x"R1pop.fastq > $1"$x"R1.sam
-				bwa bwasw ../DmelComb.fas $1"$x"R2pop.fastq > $1"$x"R2.sam
+				bwa bwasw -t 2 ../DmelComb.fas $1"$x"R1pop.fastq > $1"$x"R1.sam
+				bwa bwasw -t 2 ../DmelComb.fas $1"$x"R2pop.fastq > $1"$x"R2.sam
 
 				# create paired-end information
 				perl $popte/samro.pl --sam1 $1"$x"R1.sam --sam2 $1"$x"R2.sam \
@@ -33,8 +33,8 @@ for x in 1 2 3 4 5
 					--output $1"$x"pe-reads.sam
 	
 				# sort sam file
-				samtools view -b $1"$x"pe-reads.sam | \
-					samtools sort -O BAM -o $1"$x"pe-reads.sorted.sam
+				samtools view -b --threads 2 $1"$x"pe-reads.sam | \
+					samtools sort --threads 2 -O BAM -o $1"$x"pe-reads.sorted.sam
 					
 				# clean up
 				#rm $1"$x"R*pop.fastq
