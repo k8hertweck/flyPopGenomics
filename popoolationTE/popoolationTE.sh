@@ -68,42 +68,35 @@ for x in 1 2 3 4 5
 				fi
 	
 				# sort sam file
-				samtools view -b --threads 2 $1"$x"pe-reads.sam > $1"$x"pe-reads.bam
-				samtools sort --threads 2 -O SAM $1"$x"pe-reads.bam > $1"$x"pe-reads.sorted.sam
-					
-				# clean up
-				rm $1"$x"R*pop.fastq
-				rm $1"$x"R*.sam
-				rm $1"$x"pe-reads.sam
-				rm $1"$x"*.bam
-				gzip $1"$x"R*.fastq
+				#samtools view -b --threads 2 $1"$x"pe-reads.sam > $1"$x"pe-reads.bam
+				samtools sort --threads 2 $1"$x"pe-reads.bam > $1"$x"pe-reads.sorted.bam
+				samtools view -h --threads 2 $1"$x"pe-reads.sorted.bam > $1"$x"pe-reads.sorted.sam
 		fi
-		
+	
+		# clean up
+                rm $1"$x"R*pop.fastq
+                rm $1"$x"R*.sam
+                rm $1"$x"pe-reads.sam
+                rm $1"$x"*.bam
+                gzip $1"$x"R*.fastq
+
 		# identify forward and reverse insertions
-		perl $popte/identify-te-insertsites.pl --input $1"$x"pe-reads.sorted.sam \					
-			--output $1"$x"te-fwd-rev.txt --min-count 5 --narrow-range 75 \
-			--min-map-qual 20 -te-hierarchy-file ../TEhierarchy5.51.tsv \
-			--te-hierarchy-level family
+		echo "identify forward and reverse insertions: identify-te-insertsites.pl"
+		perl $popte/identify-te-insertsites.pl --input $1"$x"pe-reads.sorted.sam --output $1"$x"te-fwd-rev.txt --min-count 5 --narrow-range 75 --min-map-qual 20 -te-hierarchy-file ../TEhierarchy5.51.tsv --te-hierarchy-level family
 
 		# obtain TE insertions
-		perl $popte/crosslink-te-sites.pl --directional-insertions $1"$x"te-fwd-rev.txt \
-			--min-dist 75 --max-dist 250 --output $1"$x"te-inserts.txt \
-			--single-site-shift 100 --poly-n ../poly_n.gtf \
-			--te-hierarchy ../TEhierarchy5.51.tsv --te-hier-level family
+		echo "obtain TE insertions: crosslink-te-sites.pl"
+		perl $popte/crosslink-te-sites.pl --directional-insertions $1"$x"te-fwd-rev.txt --min-dist 75 --max-dist 250 --output $1"$x"te-inserts.txt --single-site-shift 100 --poly-n ../poly_n.gtf --te-hierarchy ../TEhierarchy5.51.tsv --te-hier-level family
 
 		# Use known TE insertions to improve crosslinking 
-		perl $popte/update-teinserts-with-knowntes.pl --known ../TEknown5.51.tsv \
-			--output $1"$x"te-insertions.txt --te-hierarchy-file ../TEhierarchy5.51.tsv \
-			--te-hierarchy-level family --max-dist 250 \
-			--te-insertions $1"$x"te-inserts.txt --single-site-shift 100
+		perl $popte/update-teinserts-with-knowntes.pl --known ../TEknown5.51.tsv --output $1"$x"te-insertions.txt --te-hierarchy-file ../TEhierarchy5.51.tsv --te-hierarchy-level family --max-dist 250 --te-insertions $1"$x"te-inserts.txt --single-site-shift 100
 
 		# estimate population frequencies
-		perl $popte/estimate-polymorphism.pl --sam-file $1"$x"pe-reads.sorted.sam \
-			--te-insert-file $1"$x"te-insertions.txt \
-			--te-hierarchy-file ../TEhierarchy5.51.tsv --te-hierarchy-level family \
-			--min-map-qual 20 --output $1"$x"te-polymorphism.txt
+		echo "estimate population frequencies: estimate-polymorphism.pl"
+		perl $popte/estimate-polymorphism.pl --sam-file $1"$x"pe-reads.sorted.sam --te-insert-file $1"$x"te-insertions.txt --te-hierarchy-file ../TEhierarchy5.51.tsv --te-hierarchy-level family --min-map-qual 20 --output $1"$x"te-polymorphism.txt
 
 		# filter output
-		perl $popte/filter-teinserts.pl --te-insertions $1"$x"te-polymorphism.txt \
-			--output $1"$x"te-poly-filtered.txt --discard-overlapping --min-count 5
+		echo "filter output: filter-teinserts.pl"
+		perl $popte/filter-teinserts.pl --te-insertions $1"$x"te-polymorphism.txt --output $1"$x"te-poly-filtered.txt --discard-overlapping --min-count 5
 done
+
