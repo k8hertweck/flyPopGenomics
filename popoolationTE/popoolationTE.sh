@@ -67,7 +67,7 @@ for x in 1 2 3 4 5
 							--output $1"$x"pe-reads.sam
 				fi
 	
-CHECK ON ACO2				# sort sam file
+				# sort sam file
 				samtools view -b --threads 2 $1"$x"pe-reads.sam > $1"$x"pe-reads.bam
 				samtools sort --threads 2 -O SAM $1"$x"pe-reads.bam > $1"$x"pe-reads.sorted.sam
 					
@@ -81,15 +81,15 @@ CHECK ON ACO2				# sort sam file
 		
 		# identify forward and reverse insertions
 		perl $popte/identify-te-insertsites.pl --input $1"$x"pe-reads.sorted.sam \					
-			--output $1"$x"te-fwd-rev.txt --min-count 3 --narrow-range 75 \
+			--output $1"$x"te-fwd-rev.txt --min-count 5 --narrow-range 75 \
 			--min-map-qual 20 -te-hierarchy-file ../TEhierarchy5.51.tsv \
 			--te-hierarchy-level family
 
 		# obtain TE insertions
 		perl $popte/crosslink-te-sites.pl --directional-insertions $1"$x"te-fwd-rev.txt \
-			--min-dist 74 --max-dist 250 --output $1"$x"te-inserts.txt \
+			--min-dist 75 --max-dist 250 --output $1"$x"te-inserts.txt \
 			--single-site-shift 100 --poly-n ../poly_n.gtf \
-			--te-hierarchy ../TEhierarchy5.51.tsv --te-hier-level order
+			--te-hierarchy ../TEhierarchy5.51.tsv --te-hier-level family
 
 		# Use known TE insertions to improve crosslinking 
 		perl $popte/update-teinserts-with-knowntes.pl --known ../TEknown5.51.tsv \
@@ -105,5 +105,5 @@ CHECK ON ACO2				# sort sam file
 
 		# filter output
 		perl $popte/filter-teinserts.pl --te-insertions $1"$x"te-polymorphism.txt \
-			--output $1"$x"te-poly-filtered.txt --discard-overlapping --min-count 10
+			--output $1"$x"te-poly-filtered.txt --discard-overlapping --min-count 5
 done
