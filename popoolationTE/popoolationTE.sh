@@ -68,7 +68,7 @@ for x in 1 2 3 4 5
 				fi
 	
 				# sort sam file
-				#samtools view -b --threads 2 $1"$x"pe-reads.sam > $1"$x"pe-reads.bam
+				samtools view -b --threads 2 $1"$x"pe-reads.sam > $1"$x"pe-reads.bam
 				samtools sort --threads 2 $1"$x"pe-reads.bam > $1"$x"pe-reads.sorted.bam
 				samtools view -h --threads 2 $1"$x"pe-reads.sorted.bam > $1"$x"pe-reads.sorted.sam
 		fi
