@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# setting up files to run PopoolationTE
+# run following filePrep.sh
+# DmelComb.fas not tracked in GitHub repo, but other files are
+
 #
 #SBATCH -J popTEsetup                 # Job name
 #SBATCH -N 1                   # Total number of nodes (16 cores/node)
