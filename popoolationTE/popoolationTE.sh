@@ -1,6 +1,9 @@
 #!/bin/bash
-## running popoolationTE on individual pooled population files
-# Usage: specify treatment (e.g., ACO) on command line as $1
+## running popoolationTE on individual pooled populations
+# Usage: specify treatment (e.g., ACO) on command line as $1 in file popTEscripts, 
+#	run using popTE.slurm batch script
+# requires first running filePrep.sh and popTEsetup.slurm
+
 # PopoolationTE note: comment out "if of read is supposed to end with /1 or /2 :" warning on line 310 of samro.pl or large output files will result
 
 module load bwa/0.7.7 perl/5.16.2 samtools/1.3
@@ -100,4 +103,3 @@ for x in 1 2 3 4 5
 		# clean up
 		rm $1"$x"pe-reads.sorted.sam
 done
-
