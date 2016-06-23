@@ -13,9 +13,10 @@ cd /scratch/03177/hertweck/fly/$1
 for x in 1 2 3 4 5
 	do
 		echo $1"$x"
-		if [ -f $1"$x"pe-reads.sorted.sam ]
+		if [ -f $1"$x"pe-reads.sorted.bam ]
 			then
 				echo "reads already mapped"
+				samtools view -h --threads 2 $1"$x"pe-reads.sorted.bam > $1"$x"pe-reads.sorted.sam
 			else
 				# file conversion
 				if [ -f $1"$x"R1.fastq ]
@@ -74,11 +75,8 @@ for x in 1 2 3 4 5
 		fi
 	
 		# clean up
-                rm $1"$x"R*pop.fastq
-                rm $1"$x"R*.sam
-                rm $1"$x"pe-reads.sam
-                rm $1"$x"*.bam
-                gzip $1"$x"R*.fastq
+        rm $1"$x"R*pop.fastq $1"$x"R*.sam $1"$x"pe-reads.bam $1"$x"pe-reads.sam
+        gzip $1"$x"R*.fastq
 
 		# identify forward and reverse insertions
 		echo "identify forward and reverse insertions: identify-te-insertsites.pl"
@@ -98,5 +96,8 @@ for x in 1 2 3 4 5
 		# filter output
 		echo "filter output: filter-teinserts.pl"
 		perl $popte/filter-teinserts.pl --te-insertions $1"$x"te-polymorphism.txt --output $1"$x"te-poly-filtered.txt --discard-overlapping --min-count 5
+
+		# clean up
+		rm $1"$x"pe-reads.sorted.sam
 done
 
