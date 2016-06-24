@@ -1,0 +1,1 @@
+ID	pos	F_R	family	popfreq	order	refID	comment	Fstart	Fend	Ffreq	Fcov	FreadsP	FreadsA	Foverlap	Rstart	Rend	Rfreq	Rcov	RreadsP	RreadsA	Roverlap
