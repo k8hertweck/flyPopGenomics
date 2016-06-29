@@ -46,7 +46,7 @@ Helena Helena Helena non-LTR non-LTR RNA 0
 Helitron Helitron Helitron Helitron Helitron Helitron 0
 I I-element I-element non-LTR non-LTR RNA 0
 I-element I-element I-element non-LTR non-LTR RNA 0
-INE-1 INE-1 INE-1 TIR TIR DNA 0
+INE-1 INE-1 INE-1 INE-1 INE-1 INE-1 0
 Idefix Idefix Idefix LTR LTR RNA 0
 Ivk Ivk Ivk non-LTR non-LTR RNA 0
 Juan Juan Juan non-LTR non-LTR RNA 0
