@@ -24,7 +24,7 @@ scripts=/home1/03177/hertweck/fly/flyPopGenomics/popoolationTE
 cd /scratch/03177/hertweck/fly
 
 # copy files over from scripts folder
-#cp $scripts/DmelComb.fas .
+#cp $scripts/DmelComb.fas . #too large for GitHub
 cp $scripts/TEhierarchy5.51.tsv .
 cp $scripts/TEknown5.51.tsv .
 
