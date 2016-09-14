@@ -21,9 +21,7 @@
 #SBATCH -t 24:00:00            # Run time (hh:mm:ss)
 #SBATCH --mail-user k8hertweck@gmail.com
 #SBATCH --mail-type END
-#      <------------ Account String ------------>
-# <--- (Use this ONLY if you have MULTIPLE accounts) --->
-##SBATCH -A 
+##SBATCH -A flyTE
 #------------------------------------------------------
 
 module load launcher
