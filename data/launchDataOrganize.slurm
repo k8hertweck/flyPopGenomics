@@ -13,7 +13,7 @@
 # 
 #         <------ Setup Parameters ------>
 #
-#SBATCH -J LD                 # Job name
+#SBATCH -J flyOrganize                 # Job name
 #SBATCH -N 1                   # Total number of nodes (16 cores/node)
 #SBATCH -n 16                   # Total number of tasks
 #SBATCH -p normal              # Queue name
