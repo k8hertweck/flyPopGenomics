@@ -19,31 +19,34 @@ for x in 1 2 3 4 5
 		if [ -f $1"$x"pe-reads.sorted.bam ]
 			then
 				echo "reads already mapped"
-				samtools view -h --threads 2 $1"$x"pe-reads.sorted.bam > $1"$x"pe-reads.sorted.sam
 			else
 				# file conversion
 				if [ -f $1"$x"R1.fastq ]
 					then 
 						echo "R1 already unzipped"
 					else
+						echo "unzipping R1"
 						gunzip $1"$x"R1.fastq.gz 
 				fi
 				if [ -f $1"$x"R2.fastq ]
 					then
 						echo "R2 already unzipped"
 					else
+						echo "unzipping R2"
 						gunzip $1"$x"R2.fastq.gz
 				fi
 				if [ -f $1"$x"R1pop.fastq ]
 					then 
 						echo "R1 already converted"
 					else
+						echo "converting R1"
 						awk '{if ($2 ~ /^[0-9]/) print $1 "/1"; else print $0}' $1"$x"R1.fastq > $1"$x"R1pop.fastq
 				fi
 				if [ -f $1"$x"R2pop.fastq ]
 					then 
 						echo "R2 already converted"
 					else
+						echo "converting R2"
 						awk '{if ($2 ~ /^[0-9]/) print $1 "/2"; else print $0}' $1"$x"R2.fastq > $1"$x"R2pop.fastq
 				fi				
 				
@@ -52,12 +55,14 @@ for x in 1 2 3 4 5
 					then 
 						echo "R1 already mapped"
 					else
+						echo "mapping R1"
 						bwa bwasw -t 2 ../DmelComb.fas $1"$x"R1pop.fastq > $1"$x"R1.sam
 				fi
 				if [ -f $1"$x"R2.sam ]
 					then 
 						echo "R2 already mapped"
 					else
+						echo "mapping R2"
 						bwa bwasw -t 2 ../DmelComb.fas $1"$x"R2pop.fastq > $1"$x"R2.sam
 				fi
 
@@ -66,13 +71,16 @@ for x in 1 2 3 4 5
 					then 
 						echo "mapped reads already paired"
 					else
+						echo "pairing mapped reads"
 						perl $popte/samro.pl --sam1 $1"$x"R1.sam --sam2 $1"$x"R2.sam \
 							--fq1 $1"$x"R1pop.fastq --fq2 $1"$x"R2pop.fastq \
 							--output $1"$x"pe-reads.sam
 				fi
 	
 				# sort mapped file and save as bam
+				echo "sorting mapped file"
 				samtools view -b --threads 2 $1"$x"pe-reads.sam > $1"$x"pe-reads.bam
+				echo "saving mapped file to bam"
 				samtools sort --threads 2 $1"$x"pe-reads.bam > $1"$x"pe-reads.sorted.bam
 		fi
 		
@@ -81,6 +89,7 @@ for x in 1 2 3 4 5
 			then
 				echo "mapped file converted to sam"
 			else
+				echo "converting mapped file to sam"
 				samtools view -h --threads 2 $1"$x"pe-reads.sorted.bam > $1"$x"pe-reads.sorted.sam
 		fi
 	
