@@ -119,7 +119,7 @@ for x in 1 2 3 4 5
 
 						# estimate population frequencies
 						echo "estimate population frequencies: estimate-polymorphism.pl"
-				perl $popte/estimate-polymorphism.pl --sam-file $1"$x"pe-reads.sorted.sam --te-insert-file $1"$x"te-insertions.txt --te-hierarchy-file ../TEhierarchy5.51.tsv --te-hierarchy-level family --min-map-qual 20 --output $1"$x"te-polymorphism.txt
+						perl $popte/estimate-polymorphism.pl --sam-file $1"$x"pe-reads.sorted.sam --te-insert-file $1"$x"te-insertions.txt --te-hierarchy-file ../TEhierarchy5.51.tsv --te-hierarchy-level family --min-map-qual 20 --output $1"$x"te-polymorphism.txt
 
 						# filter output
 						echo "filter output: filter-teinserts.pl"
