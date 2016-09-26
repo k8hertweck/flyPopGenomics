@@ -85,7 +85,6 @@ for x in 1 2 3 4 5
 	
 				# clean up
 				rm $1"$x"R*pop.fastq $1"$x"R*.sam $1"$x"pe-reads.bam $1"$x"pe-reads.sam
-				gzip $1"$x"R*.fastq
 
 				## run popoolationTE
 				if [ -f $1"$x"te-poly-filtered.txt ]
