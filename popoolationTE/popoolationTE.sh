@@ -25,33 +25,19 @@ for x in 1 2 3 4 5
 						echo "reads already mapped"
 					else
 						# file conversion
-						if [ -f $1"$x"R1.fastq ]
-							then 
-								echo "R1 already unzipped"
-							else
-								echo "unzipping R1"
-								gunzip $1"$x"R1.fastq.gz 
-						fi
-						if [ -f $1"$x"R2.fastq ]
-							then
-								echo "R2 already unzipped"
-							else
-								echo "unzipping R2"
-								gunzip $1"$x"R2.fastq.gz
-						fi
 						if [ -f $1"$x"R1pop.fastq ]
 							then 
 								echo "R1 already converted"
 							else
 								echo "converting R1"
-								awk '{if ($2 ~ /^[0-9]/) print $1 "/1"; else print $0}' $1"$x"R1.fastq > $1"$x"R1pop.fastq
+								zcat $1"$x"R1.fastq.gz | awk '{if ($1 ~ /SRR/) print $0 "/1"; else print $0}' | tr -d " " > $1"$x"R1pop.fastq
 						fi
 						if [ -f $1"$x"R2pop.fastq ]
 							then 
 								echo "R2 already converted"
 							else
 								echo "converting R2"
-								awk '{if ($2 ~ /^[0-9]/) print $1 "/2"; else print $0}' $1"$x"R2.fastq > $1"$x"R2pop.fastq
+								zcat $1"$x"R2.fastq.gz | awk '{if ($1 ~ /SRR/) print $0 "/2"; else print $0}' | tr -d " " > $1"$x"R2pop.fastq
 						fi				
 				
 						# run bwa on each paired end file individually
