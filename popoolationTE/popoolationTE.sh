@@ -30,14 +30,14 @@ for x in 1 2 3 4 5
 								echo "R1 already converted"
 							else
 								echo "converting R1"
-								zcat $1"$x"R1.fastq.gz | awk '{if ($1 ~ /SRR/) print $0 "/1"; else print $0}' | tr -d " " > $1"$x"R1pop.fastq
+								gunzip $1"$x"R1.fastq.gz | awk '{if ($1 ~ /SRR/) print $0 "/1"; else print $0}' | tr -d " " > $1"$x"R1pop.fastq
 						fi
 						if [ -f $1"$x"R2pop.fastq ]
 							then 
 								echo "R2 already converted"
 							else
 								echo "converting R2"
-								zcat $1"$x"R2.fastq.gz | awk '{if ($1 ~ /SRR/) print $0 "/2"; else print $0}' | tr -d " " > $1"$x"R2pop.fastq
+								gunzip $1"$x"R2.fastq.gz | awk '{if ($1 ~ /SRR/) print $0 "/2"; else print $0}' | tr -d " " > $1"$x"R2pop.fastq
 						fi				
 				
 						# run bwa on each paired end file individually
