@@ -3,4 +3,6 @@
 viz/.Rhistory
 viz/viz.Rproj
 popoolationTE/DmelComb.fas
+data/*.o*
+popoolationTE/*.o*
 
