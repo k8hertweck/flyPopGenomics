@@ -6,3 +6,5 @@ popoolationTE/DmelComb.fas
 data/*.o*
 popoolationTE/*.o*
 LDx/results/*
+popoolationTE/subsampledResults/*
+
