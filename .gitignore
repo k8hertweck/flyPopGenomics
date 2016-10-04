@@ -7,4 +7,5 @@ data/*.o*
 popoolationTE/*.o*
 LDx/results/*
 popoolationTE/subsampledResults/*
+tlex2/results/*
 
