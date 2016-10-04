@@ -1,0 +1,3 @@
+tlex-open-v2.2.1.pl
+
+remove line 1741 ("chomp $1")
