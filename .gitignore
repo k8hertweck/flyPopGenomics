@@ -1,11 +1,11 @@
 .DS_Store
 .Rproj.user
+.Rhistory
 viz/.Rhistory
 viz/viz.Rproj
 popoolationTE/DmelComb.fas
 data/*.o*
 popoolationTE/*.o*
 LDx/results/*
-popoolationTE/subsampledResults/*
 tlex2/results/*
 
